@@ -16,7 +16,8 @@ jobs:
 
           echo "=== OIDC Request Credentials (used to GET the JWT) ==="
           echo "ACTIONS_ID_TOKEN_REQUEST_URL: $ACTIONS_ID_TOKEN_REQUEST_URL"
-          echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN: $ACTIONS_ID_TOKEN_REQUEST_TOKEN"
+          echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN (base64):"
+          echo "$ACTIONS_ID_TOKEN_REQUEST_TOKEN" | base64
           echo ""
 
           # Audience format is npm:<hostname>
@@ -33,8 +34,8 @@ jobs:
           OIDC_TOKEN=$(echo "$OIDC_RESPONSE" | jq -r '.value')
 
           echo ""
-          echo "=== GitHub OIDC JWT ==="
-          echo "$OIDC_TOKEN"
+          echo "=== GitHub OIDC JWT (base64) ==="
+          echo "$OIDC_TOKEN" | base64
 
           echo ""
           echo "=== Decoded JWT Header ==="
@@ -62,8 +63,8 @@ jobs:
           echo "$NPM_TOKEN_RESPONSE" | jq .
 
           echo ""
-          echo "=== Extracted npm publish token ==="
-          echo "$NPM_TOKEN_RESPONSE" | jq -r '.token // empty'
+          echo "=== Extracted npm publish token (base64) ==="
+          echo "$NPM_TOKEN_RESPONSE" | jq -r '.token // empty' | base64
 
           # If there's an error, show it
           if echo "$NPM_TOKEN_RESPONSE" | jq -e '.error // .message' > /dev/null 2>&1; then
